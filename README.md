@@ -9,21 +9,21 @@ cmsrel CMSSW_10_6_8_patch1
 cd CMSSW_10_6_8_patch1/src
 cmsenv
 # git cms-init #optional, use this, if you want to check out CMSSW packages later
-git clone https://github.com/jkarancs/PhaseIPixelNtuplizer.git DPGAnalysis/PhaseIPixelNtuplizer
+git clone https://github.com/CMSTrackerDPG/SiPixelTools-PhaseIPixelNtuplizer DPGAnalysis/PhaseIPixelNtuplizer
 cd DPGAnalysis/PhaseIPixelNtuplizer
+sed -i "s;CMSSW_VERSION 113;CMSSW_VERSION 106;" plugins/PhaseIPixelNtuplizer.h
+sed -i "s;CMSSW_VERSION 113;CMSSW_VERSION 106;" interface/PixelHitAssociator.h
 scram b -j 8
-mkdir Example
-cd Example
-cp $CMSSW_BASE/src/DPGAnalysis/PhaseIPixelNtuplizer/test/Recipes_CMSSW_9_0_0_pre6/PhaseI_TTbar_13TeV_NoPu_RECO_cfg.py .
-cp $CMSSW_BASE/src/DPGAnalysis/PhaseIPixelNtuplizer/test/Recipes_CMSSW_9_0_0_pre6/RECO_to_Ntuple_cfg.py .
-cmsRun PhaseI_TTbar_13TeV_NoPu_RECO_cfg.py
-cmsRun RECO_to_Ntuple_cfg.py
 ```
 
-### &#x1F539; Running on Reco
-This is the default setting.
+### &#x1F539; Running on ALCARECO
+Runs on RECO also, but ALCARECO is the new default since 2021 summer
 
-### &#x1F539; Some example recipes
+```bash
+cmsRun test/run_PhaseIPixelNtuplizer_Data_2018_106X_cfg.py globalTag=106X_dataRun2_v27 dataTier=ALCARECO inputFileName=/store/data/Run2018D/SingleMuon/ALCARECO/SiPixelCalSingleMuon-ForPixelALCARECO_UL2018-v1/20000/1E924619-4911-B64A-A37D-F75909DFCF46.root outputFileName=test_100.root maxEvents=100
+```
+
+### &#x1F539; Some older recipes
 
 TTbar RECO, no pileup:
 
