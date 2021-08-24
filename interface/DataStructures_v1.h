@@ -17,7 +17,7 @@
 			 - Inside PhaseIPixelNtuplizer.h
 			 #include "../src/DataStructures_v1.h"
 
-			 cd DPGAnalysis/PhaseIPixelNtuplizer
+			 cd SiPixelTools/PhaseIPixelNtuplizer
 			 git commit -am "Update: v1.0 Phase I ntuple (CMSSW_8_0_0_pre15), Description: Fixed all trees and most important variables"
 			 git tag -a PhaseI_v1.0_CMSSW_8_0_0_pre15 -m "V1 version of Phase I ntuples, tested to work with CMSSW_8_1_0_pre15"
 			 git push origin

@@ -37,7 +37,7 @@
 # Step 0 - Check out PixelPhaseIPixelNtuplizer (or just the test directory like below)
 #   eg:
 #   cmsenv      #in any CMSSW release area (CMSSW_*/src)
-#   git clone https://github.com/jkarancs/PhaseIPixelNtuplizer DPGAnalysis/PhaseIPixelNtuplizer
+#   git clone https://github.com/jkarancs/PhaseIPixelNtuplizer SiPixelTools/PhaseIPixelNtuplizer
 #
 #   - This script uses other scripts in the test/scripts directory so stay in the current directory
 #   - Create a list of input files that are accessible within CERN (T2/T1/T0_CERN_CH, T2_CH_CAF etc)

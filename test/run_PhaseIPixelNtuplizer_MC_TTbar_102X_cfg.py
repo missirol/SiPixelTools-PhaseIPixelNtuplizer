@@ -230,7 +230,7 @@ if opt.noMagField:
 	process.g4SimHits.UseMagneticField = cms.bool(False)
 
 # Set 20-65 pileup
-from DPGAnalysis.PhaseIPixelNtuplizer.PoolSource_13TeV_102X_upgrade2018_realistic_v9_GS import *
+from SiPixelTools.PhaseIPixelNtuplizer.PoolSource_13TeV_102X_upgrade2018_realistic_v9_GS import *
 process.mix.input.fileNames = pileupFileNames
 pileuplow  = 20
 pileuphigh = 65

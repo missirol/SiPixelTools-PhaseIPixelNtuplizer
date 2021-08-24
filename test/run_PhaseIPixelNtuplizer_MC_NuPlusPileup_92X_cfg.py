@@ -199,7 +199,7 @@ process.maxEvents.input = opt.maxEvents
 process.MessageLogger.cerr.FwkReport.reportEvery = 10
 
 # Input GEN-SIM files
-from DPGAnalysis.PhaseIPixelNtuplizer.PoolSource_13TeV_92X_upgrade2017_realistic_v2_GS import *
+from SiPixelTools.PhaseIPixelNtuplizer.PoolSource_13TeV_92X_upgrade2017_realistic_v2_GS import *
 process.mix.input.fileNames = pileupFileNames
 
 # Add Input file in case using it

@@ -8,7 +8,7 @@ DataTier=DataSet.split('/')[3]
 from WMCore.Configuration import Configuration
 config = Configuration()
 
-PPNdir = os.environ['CMSSW_BASE']+'/src/DPGAnalysis/PhaseIPixelNtuplizer/'
+PPNdir = os.environ['CMSSW_BASE']+'/src/SiPixelTools/PhaseIPixelNtuplizer/'
 
 config.section_('General')
 config.General.transferOutputs = True

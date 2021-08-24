@@ -17,7 +17,7 @@
 			 - Inside PhaseIPixelNtuplizer.h
 			 #include "../interface/DataStructures_v2.h"
 
-			 cd DPGAnalysis/PhaseIPixelNtuplizer
+			 cd SiPixelTools/PhaseIPixelNtuplizer
 			 git add interface/DataStructures_v2.h
 			 git commit -am "Update: v2.0 Phase I ntuple (CMSSW_8_1_0), Description: Switched to using SiPixelCoordinates (new class)"
 			 git tag -a PhaseI_v2.0_CMSSW_8_1_0 -m "V2 version of Phase I ntuples, tested to work with CMSSW_8_1_0"

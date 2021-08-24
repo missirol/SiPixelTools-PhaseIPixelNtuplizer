@@ -27,8 +27,8 @@ setenv SCRAM_ARCH slc6_amd64_gcc530
 cmsrel $1
 cd $1/src
 cmsenv
-git clone https://github.com/jkarancs/PhaseIPixelNtuplizer DPGAnalysis/PhaseIPixelNtuplizer
-cd DPGAnalysis/PhaseIPixelNtuplizer
+git clone https://github.com/jkarancs/PhaseIPixelNtuplizer SiPixelTools/PhaseIPixelNtuplizer
+cd SiPixelTools/PhaseIPixelNtuplizer
 
 # output file
 set output="Ntuple_"$3".root"

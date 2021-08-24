@@ -9,8 +9,8 @@ cmsrel CMSSW_10_6_8_patch1
 cd CMSSW_10_6_8_patch1/src
 cmsenv
 # git cms-init #optional, use this, if you want to check out CMSSW packages later
-git clone https://github.com/CMSTrackerDPG/SiPixelTools-PhaseIPixelNtuplizer DPGAnalysis/PhaseIPixelNtuplizer
-cd DPGAnalysis/PhaseIPixelNtuplizer
+git clone https://github.com/CMSTrackerDPG/SiPixelTools-PhaseIPixelNtuplizer SiPixelTools/PhaseIPixelNtuplizer
+cd SiPixelTools/PhaseIPixelNtuplizer
 sed -i "s;CMSSW_VERSION 113;CMSSW_VERSION 106;" plugins/PhaseIPixelNtuplizer.h
 sed -i "s;CMSSW_VERSION 113;CMSSW_VERSION 106;" interface/PixelHitAssociator.h
 scram b -j 8
@@ -78,7 +78,7 @@ process.RECOSIMoutput.outputCommands += cms.untracked.vstring("keep PSimHits_g4S
 
 ```python
 # Pileup
-from DPGAnalysis.PhaseIPixelNtuplizer.PoolSource_13TeV_upgrade2017_realistic_v21_v1_81X_GS import pileupFileNames
+from SiPixelTools.PhaseIPixelNtuplizer.PoolSource_13TeV_upgrade2017_realistic_v21_v1_81X_GS import pileupFileNames
 process.mix.input.fileNames = pileupFileNames
 process.mix.input.nbPileupEvents.probFunctionVariable = cms.vint32([
     0, 1, 2, 3, 4, 
