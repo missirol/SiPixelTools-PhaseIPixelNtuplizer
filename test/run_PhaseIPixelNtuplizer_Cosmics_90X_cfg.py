@@ -189,27 +189,27 @@ process.myAnalyzer_step = cms.Path(process.MeasurementTrackerEvent*process.cosmi
 #                        DataBase Stuff
 
 # Print settings
-print "Using options: "
+print("Using options: ")
 if opt.globalTag == '':
-    print "  globalTag (auto:phase1_2017_cosmics) = "+str(process.GlobalTag.globaltag)
+    print("  globalTag (auto:phase1_2017_cosmics) = ",str(process.GlobalTag.globaltag))
 else:
     if "auto:" in opt.globalTag:
-	process.GlobalTag = GlobalTag(process.GlobalTag, opt.globalTag, '')
-	print "  globalTag ("+opt.globalTag+") = "+str(process.GlobalTag.globaltag)
+        process.GlobalTag = GlobalTag(process.GlobalTag, opt.globalTag, '')
+        print("  globalTag (", opt.globalTag, ") = ",str(process.GlobalTag.globaltag))
     else:
-	process.GlobalTag.globaltag = opt.globalTag
-	print "  globalTag (manually chosen)            = "+str(process.GlobalTag.globaltag)
-print "  useTemplates                           = "+str(opt.useTemplates)
-print "  saveRECO                               = "+str(opt.saveRECO)
-print "  useRECO                                = "+str(opt.useRECO)
-print "  RECOFileName                           = "+str(opt.RECOFileName)
-print "  outputFileName                         = "+str(opt.outputFileName)
-print "  maxEvents                              = "+str(opt.maxEvents)
-print "  useLocalLASim                          = "+str(opt.useLocalLASim)
-print "  useLocalQuality                        = "+str(opt.useLocalQuality)
-print "  useLocalLA                             = "+str(opt.useLocalLA)
-print "  useLocalGain                           = "+str(opt.useLocalGain)
-print "  useLocalGenErr                         = "+str(opt.useLocalGenErr)
+        process.GlobalTag.globaltag = opt.globalTag
+        print("  globalTag (manually chosen)            = ", str(process.GlobalTag.globaltag))
+print("  useTemplates                           = ", str(opt.useTemplates))
+print("  saveRECO                               = ", str(opt.saveRECO))
+print("  useRECO                                = ", str(opt.useRECO))
+print("  RECOFileName                           = ", str(opt.RECOFileName))
+print("  outputFileName                         = ", str(opt.outputFileName))
+print("  maxEvents                              = ", str(opt.maxEvents))
+print("  useLocalLASim                          = ", str(opt.useLocalLASim))
+print("  useLocalQuality                        = ", str(opt.useLocalQuality))
+print("  useLocalLA                             = ", str(opt.useLocalLA))
+print("  useLocalGain                           = ", str(opt.useLocalGain))
+print("  useLocalGenErr                         = ", str(opt.useLocalGenErr))
 
 # Test Local DB conditions
 # LA (SIM)

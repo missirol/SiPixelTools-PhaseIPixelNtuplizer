@@ -270,42 +270,42 @@ process.PhaseIPixelNtuplizer_step = cms.Path(process.PhaseINtuplizerPlugin)
 #                        DataBase Stuff
 
 # Print settings
-print "Using options: "
+print("Using options: ")
 if opt.globalTag == '':
-    print "  globalTag (auto:run2_data) = "+str(process.GlobalTag.globaltag)
+    print("  globalTag (auto:run2_data) = ", str(process.GlobalTag.globaltag))
 else:
     if "auto:" in opt.globalTag:
-	process.GlobalTag = GlobalTag(process.GlobalTag, opt.globalTag, '')
-	print "  globalTag ("+opt.globalTag+") = "+str(process.GlobalTag.globaltag)
+        process.GlobalTag = GlobalTag(process.GlobalTag, opt.globalTag, '')
+        print("  globalTag (", opt.globalTag, ") = ",str(process.GlobalTag.globaltag))
     else:
-	process.GlobalTag.globaltag = opt.globalTag
-	print "  globalTag (manually chosen)            = "+str(process.GlobalTag.globaltag)
-print "  dataTier                               = "+str(opt.dataTier)
-print "  useTemplates                           = "+str(opt.useTemplates)
-print "  saveRECO                               = "+str(opt.saveRECO)
-print "  RECOFileName                           = "+str(opt.RECOFileName)
-print "  inputFileName                          = "+str(opt.inputFileName)
-print "  secondaryInputFileName                 = "+str(opt.secondaryInputFileName)
-print "  outputFileName                         = "+str(opt.outputFileName)
-print "  noMagField                             = "+str(opt.noMagField)
-print "  maxEvents                              = "+str(opt.maxEvents)
-print "  useLocalQuality                        = "+str(opt.useLocalQuality)
-print "  useLocalLA                             = "+str(opt.useLocalLA)
-print "  useLocalGain                           = "+str(opt.useLocalGain)
-print "  useLocalGenErr                         = "+str(opt.useLocalGenErr)
-print "  useLocalTemplates                      = "+str(opt.useLocalTemplates)
-print "  prescale                               = "+str(opt.prescale)
+        process.GlobalTag.globaltag = opt.globalTag
+        print("  globalTag (manually chosen)            = ",str(process.GlobalTag.globaltag))
+print("  dataTier                               = ", str(opt.dataTier))
+print("  useTemplates                           = ", str(opt.useTemplates))
+print("  saveRECO                               = ", str(opt.saveRECO))
+print("  RECOFileName                           = ", str(opt.RECOFileName))
+print("  inputFileName                          = ", str(opt.inputFileName))
+print("  secondaryInputFileName                 = ", str(opt.secondaryInputFileName))
+print("  outputFileName                         = ", str(opt.outputFileName))
+print("  noMagField                             = ", str(opt.noMagField))
+print("  maxEvents                              = ", str(opt.maxEvents))
+print("  useLocalQuality                        = ", str(opt.useLocalQuality))
+print("  useLocalLA                             = ", str(opt.useLocalLA))
+print("  useLocalGain                           = ", str(opt.useLocalGain))
+print("  useLocalGenErr                         = ", str(opt.useLocalGenErr))
+print("  useLocalTemplates                      = ", str(opt.useLocalTemplates))
+print("  prescale                               = ", str(opt.prescale))
 
 if opt.loadTagsFromPrep != '':
-	Rcds = {
-		"SiPixelQuality":		   "SiPixelQualityFromDbRcd",
-		"SiPixelLorentzAngle":		   "SiPixelLorentzAngleRcd",
-		"SiPixelGainCalibration":          "SiPixelGainCalibrationOfflineRcd",
-		"SiPixelGenErrorDBObject":	   "SiPixelGenErrorDBObjectRcd",
-		"SiPixelTemplateDBObject":	   "SiPixelTemplateDBObjectRcd"
-		}
-	for cond in str(opt.loadTagsFromPrep).split(','):
-		print "Loading condition: "+cond
+    Rcds = {
+        "SiPixelQuality":		   "SiPixelQualityFromDbRcd",
+        "SiPixelLorentzAngle":		   "SiPixelLorentzAngleRcd",
+        "SiPixelGainCalibration":          "SiPixelGainCalibrationOfflineRcd",
+        "SiPixelGenErrorDBObject":	   "SiPixelGenErrorDBObjectRcd",
+        "SiPixelTemplateDBObject":	   "SiPixelTemplateDBObjectRcd"
+    }
+    for cond in str(opt.loadTagsFromPrep).split(','):
+        print("Loading condition: ", cond)
 		if opt.noMagField and "Template" in cond:
 			process.GlobalTag.toGet.append(cms.PSet(
 				connect = cms.string('frontier://FrontierPrep/CMS_CONDITIONS'),
