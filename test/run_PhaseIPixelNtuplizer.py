@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.VarParsing as opts
 
-opt = opts.VarParsing ('analysis')
+opt = opts.VarParsing('analysis')
 
 opt.register('cfg', '',
 	     opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.string,
@@ -26,17 +26,13 @@ opt.register('RECOFileName',  '',
 	     opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.string,
 	     'Name of the RECO output file in case saveRECO was used')
 
-opt.register('inputFileName',   '',
-             opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.string,
-             'Name of the input root file')
-
-opt.register('secondaryInputFileName',   '',
-             opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.string,
-             'Name of the RAW (parent) input root file')
-
-opt.register('outputFileName',   'Ntuple.root',
+opt.register('outputFileName', 'Ntuple.root',
              opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.string,
              'Name of the histograms file')
+
+opt.register('isCosmicsData', False,
+	     opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.bool,
+	     'Input events are from cosmics runs')
 
 opt.register('noMagField',         False,
 	     opts.VarParsing.multiplicity.singleton, opts.VarParsing.varType.bool,
@@ -78,6 +74,8 @@ opt.parseArguments()
 
 if opt.cfg == 'cruzet2021':
   from SiPixelTools.PhaseIPixelNtuplizer.configs.Data_CRuZeT2021_113X_cfg import cms, process
+  opt.isCosmicsData = True
+  opt.noMagField = True
 else:
   raise RuntimeError('invalid argument for option "cfg": "'+opt.cfg+'" (allowed values: "cruzet2021")')
 
@@ -93,47 +91,22 @@ if opt.RECOFileName == '':
   opt.RECOFileName = 'file:RECO_'+str(opt.maxEvents)+'.root'
 
 # Input file
-#if opt.inputFileName == '':
-#    if opt.dataTier == 'RAW':
-#        process.source = cms.Source("PoolSource",
-#                                    fileNames = cms.untracked.vstring(
-#                                        'file:/data/store/data/Run2016B/ZeroBias/RAW/v2/000/273/158/00000/C62669DA-7418-E611-A8FB-02163E01377A.root' #273158 RAW
-#                                        )
-#                                    )
-#    elif opt.dataTier == 'AOD':
-#        process.source = cms.Source("PoolSource",
-#                                    fileNames = cms.untracked.vstring('/store/data/Run2016D/ZeroBias/AOD/PromptReco-v2/000/276/317/00000/12A3F60B-1145-E611-83B1-02163E01431C.root'),
-#                                    secondaryFileNames = cms.untracked.vstring('/store/data/Run2016D/ZeroBias/RAW/v2/000/276/317/00000/46CDE349-0842-E611-A1F4-02163E012067.root')
-#                                    )
-#    else:
-#        process.source = cms.Source("PoolSource",
-#                                    fileNames = cms.untracked.vstring(
-#                                        '/store/express/Run2017A/ExpressPhysics/FEVT/Express-v1/000/294/928/00000/6ADE5F77-D03F-E711-BFED-02163E01A6C2.root' #first run
-#                                        )
-#                                    )
-#else:
-#    if opt.secondaryInputFileName == '':
-#        process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(opt.inputFileName))
-#    else:
-#        process.source = cms.Source("PoolSource",
-#                                    fileNames = cms.untracked.vstring(opt.inputFileName),
-#                                    secondaryFileNames = cms.untracked.vstring(opt.secondaryInputFileName)
-#                                    )
+if opt.inputFiles != []:
+  process.source.fileNames = opt.inputFiles
+
+if opt.secondaryInputFiles != []:
+  process.source.secondaryFileNames = opt.secondaryInputFiles
 
 ## Fix problem with default config
-#process.options = cms.untracked.PSet(
-#  SkipEvent = cms.untracked.vstring('ProductNotFound'),
-#  wantSummary = cms.untracked.bool(True)
-#)
-
-#________________________________________________________________________
-#                        Main Analysis Module
+#process.options.SkipEvent = cms.untracked.vstring('ProductNotFound')
+#process.options.wantSummary = cms.untracked.bool(True)
 
 # Refitter
 process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi")
-#process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.load("RecoTracker.TrackProducer.TrackRefitter_cfi")
-process.TrackRefitter.src = 'ctfWithMaterialTracksP5'
+
+if opt.isCosmicsData:
+  process.TrackRefitter.src = 'ctfWithMaterialTracksP5'
 
 # Specify inputs/outputs
 if opt.useTemplates:
@@ -154,7 +127,7 @@ process.PhaseINtuplizerPlugin = cms.EDAnalyzer("PhaseIPixelNtuplizer",
     trajectoryInput = cms.InputTag('TrackRefitter'),
     clusterCollection = cms.InputTag("siPixelClusters"),
     outputFileName = cms.untracked.string(opt.outputFileName),
-    cosmics = cms.untracked.bool(True),
+    cosmics = cms.untracked.bool(opt.isCosmicsData),
     # Global muon collection
     muonCollection                 = cms.InputTag("muons"),
     keepAllGlobalMuons             = cms.untracked.bool(True),
@@ -192,9 +165,6 @@ if opt.dataTier == 'ALCARECO':
 process.TrackRefitter_step = cms.Path(process.offlineBeamSpot*process.MeasurementTrackerEvent*process.TrackRefitter)
 process.PhaseIPixelNtuplizer_step = cms.Path(process.PhaseINtuplizerPlugin)
 
-#________________________________________________________________________
-#                        DataBase Stuff
-
 # Print settings
 print "Using options: "
 if opt.globalTag == '':
@@ -206,12 +176,13 @@ else:
     else:
 	process.GlobalTag.globaltag = opt.globalTag
 	print "  globalTag (manually chosen)            = "+str(process.GlobalTag.globaltag)
+
 print "  dataTier                               = "+str(opt.dataTier)
 print "  useTemplates                           = "+str(opt.useTemplates)
 print "  saveRECO                               = "+str(opt.saveRECO)
 print "  RECOFileName                           = "+str(opt.RECOFileName)
-print "  inputFileName                          = "+str(opt.inputFileName)
-print "  secondaryInputFileName                 = "+str(opt.secondaryInputFileName)
+print "  inputFiles                             = "+str(process.source.fileNames)
+print "  secondaryInputFiles                    = "+str(process.source.secondaryFileNames)
 print "  outputFileName                         = "+str(opt.outputFileName)
 print "  noMagField                             = "+str(opt.noMagField)
 print "  maxEvents                              = "+str(opt.maxEvents)
@@ -222,6 +193,7 @@ print "  useLocalGenErr                         = "+str(opt.useLocalGenErr)
 print "  useLocalTemplates                      = "+str(opt.useLocalTemplates)
 print "  prescale                               = "+str(opt.prescale)
 
+## DB objects
 if opt.loadTagsFromPrep != '':
 	Rcds = {
 		"SiPixelQuality":		   "SiPixelQualityFromDbRcd",
@@ -409,17 +381,11 @@ else:
 #  Schedule
 #---------------------------
 
-if opt.dataTier == 'RECO' or opt.dataTier == 'FEVT' or opt.dataTier == 'ALCARECO':
-  process.schedule = cms.Schedule(
-    process.TrackRefitter_step,
-    process.PhaseIPixelNtuplizer_step,
-    process.endjob_step
-  )
+if opt.dataTier in ['RECO', 'FEVT', 'ALCARECO']:
+  process.schedule = cms.Schedule(process.endjob_step)
 else:
   if opt.saveRECO: process.RECOoutput.fileName = opt.RECOFileName
   else: process.schedule.remove(process.RECOoutput_step)
-  process.schedule.remove(process.endjob_step)
 
 process.schedule.append(process.TrackRefitter_step)
 process.schedule.append(process.PhaseIPixelNtuplizer_step)
-process.schedule.append(process.endjob_step)
